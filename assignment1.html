@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditional statement</title>
+</head>
+<body>
+
+     <script>
+       userInput = parseInt(prompt("Welcome to TIIDELab USSD Platform \n \n 1. Airtime-self \n 2. Airtime-Others \n 3. Data \n 4. Transfer"))
+
+       if (userInput==1) {
+            amount = parseInt(prompt("Input amount"))
+            alert("Recharge of #" + amount + " was successful")
+       } 
+       else if(userInput == 2) {
+        amount = parseInt(prompt("Input amount"))
+        phoneNumber =prompt("Phone number to be recharged")
+            alert("Recharge of #" + amount + " was successful for " + phoneNumber)
+       }
+       else if (userInput == 3) {
+        userInput = parseInt(prompt("1. Self \n 2. Others \n "))
+        if(userInput == 1) {
+            amount = parseInt(prompt("Input amount for data"))
+            alert("Data worth #" + amount + " was successful")
+        }
+        else if (userInput == 2) {
+            amount = parseInt(prompt("Input amount for data"))
+            phoneNumber = prompt("Phone number for data subscription")
+            alert("Data worth #" + amount + " was successfully sent to " + phoneNumber)  
+        }
+        else{
+            alert("Invalid Input")
+        }
+       }
+       else if (userInput == 4) {
+        amount = parseInt(prompt("Input amount"))
+        accountNumber = prompt("Account Number")
+            alert("#" + amount + " was successfully transferred to " + accountNumber)
+       }
+       else {
+           alert("Invalid input")
+         }
+    </script>
+    
+</body>
+</html>
