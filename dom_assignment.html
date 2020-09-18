@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM ASSIGNMENT</title>
+</head>
+
+<style>
+
+    /* Internal Styling for the table */
+
+    body {
+        text-align: center;
+        font-family: Helvetica, sans-serif;
+    }
+
+    h3 {
+        color: blueviolet;
+        font-size: 2rem;
+    }
+
+    .table-div {
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+    }
+
+    table {
+
+        margin: auto;
+    }
+
+    thead {
+       background-color: rgba(23, 23, 141, 0.603);
+       font-weight: bold;
+       color: #fff;
+   }
+
+   td {
+       padding: 20px;
+       border: 2px solid rgba(23, 23, 141, 0.603);
+       font-size: 1.5rem;
+   }
+
+   tbody > tr > td {
+       font-size: 1.2rem;
+   }
+
+   tbody > tr:nth-child(2n) {
+       background-color: bisque;
+       color: rgb(23, 23, 141);
+   }
+
+</style>
+<body>
+    <!-- Header for the table -->
+    <h3>MY DOM ASSIGNMENT</h3>
+
+    <!-- A div container to hold the table -->
+    <div class="table-div">
+        <table>
+            <!-- Heading for the table -->
+            <thead>
+                <td>S/N</td>
+                <td>Company Name</td>
+                <td>Email</td>
+                <td>Phone</td>
+                <td>Location</td>
+            </thead>
+
+            <!-- Table body -->
+            <tbody id="company-table">
+                
+            </tbody>
+        </table>
+    </div>
+    <script>
+
+        // A company array containing different objects holding the info of different companies
+        company = [
+            {
+            "name" : "Pace",
+            "email" : "pace@gmail.com",
+            "phone" : 09012843923843,
+            "location" : "Nigeria"
+            },
+
+            {
+            "name" : "Apple",
+            "email" : "apple@gmail.com",
+            "phone" : 09347464646647,
+            "location" : "US"
+            },
+
+            {
+            "name" : "Yahoo",
+            "email" : "djd@yahoo.com",
+            "phone" : 09347464646647,
+            "location" : "Nigeria"
+            },
+
+            {
+            "name" : "Google",
+            "email" : "nawe@google.com",
+            "phone" : 09123456789,
+            "location" : "Nigeria"
+            }
+    ]
+
+        // Declaration and initialization of variable with an empty string
+            var input = ` `
+
+            // For loop to iterate through the company-array and put them into the "tbody" tag of the table
+            for(var i=0; i<company.length; i++) {
+                input += `
+                <tr>
+                    <td>${i+1}</td>
+                    <td>${company[i].name}</td>
+                    <td>${company[i].email}</td>
+                    <td>${company[i].phone}</td>
+                    <td>${company[i].location}</td>
+                </tr>`
+                document.getElementById('company-table').innerHTML = input; 
+            }  
+    </script>
+</body>
+</html>
