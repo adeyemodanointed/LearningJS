@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 12 | Local Storage </title>
+
+    <style>
+
+        * {
+            top: 0;
+            margin: 0;
+            font-family: Helvetica, sans-serif;
+        }
+
+        .my-header {
+            padding: 20px;
+            text-align: center;
+            background-color: #444444;
+            color: #fff;
+        }
+
+        #add-user {
+            display: none;
+        }
+        .add-user-form {
+            display: flex;
+            flex-direction: column;
+            background-color: rgb(51, 123, 218);
+            width: fit-content;
+            margin: auto;
+            padding: 20px;
+            justify-content: space-between;
+            height: fit-content;
+            position: absolute;
+            right: 0;
+        }
+
+        .add-user-form input {
+            border-radius: 5px;
+            border: 2px solid #aaa;
+            height: 30px;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .add-user-form input:focus {
+            outline: 0;
+        }
+
+        .add-user-form button {
+            border-radius: 5px;
+            border: none;
+            width: 100px;
+            padding: 5px;
+            background-color: #aaa;
+            margin: 5px auto;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="my-header"><h3>SAVING DETAILS IN LOCAL STORAGE AND PRINTING DOM</h3></div>
+    <button onclick="displayDiv()">Add New User</button>
+    <div id="add-user">
+        <div class="add-user-form">
+        <input type="text" placeholder="Enter your Full Name" id="fullName">
+        <input type="text" placeholder="Enter Email Address" id="email">
+        <input type="text" placeholder="Enter your Phone Number" id="phone">
+        <input type="text" placeholder="Enter your image" id="image">
+        <div class="btn-holder">
+            <button onclick="addUser()" id="updateButton" >Add User</button>
+            <button onclick="displayDiv()" >Cancel</button>
+        </div>
+    </div>
+    </div>
+
+    <div id="userDetails"></div>
+    
+    <script>
+
+        if (localStorage.getItem("internalUsers") != null) {
+            internalUsers = JSON.parse(localStorage.getItem("internalUsers")) 
+        } else {
+            internalUsers = [];
+        }
+
+        localStorage.setItem("internalUsers", JSON.stringify(internalUsers))
+
+        display(internalUsers)
+        
+        function removeUser (id) {
+            internalUsers.splice(id,1);
+            localStorage.setItem("internalUsers", JSON.stringify(internalUsers));
+            display(internalUsers);
+        }
+
+        function editUser (id) {
+            document.getElementById("fullName").value = internalUsers[id].fullName;
+            document.getElementById("email").value = internalUsers[id].email;
+            document.getElementById("phone").value = internalUsers[id].phone;
+            document.getElementById("image").value = internalUsers[id].image;
+
+            if(document.getElementById("updateButton").innerHTML === "Add User") {
+                document.getElementById("updateButton").innerHTML = "Update";
+            } else {
+                document.getElementById("updateButton").innerHTML = "Add User";
+            }
+            displayDiv();
+
+            return id;
+        }
+
+        function display(internalUsers) {
+            userVar = '';
+
+        for(i=0; i<internalUsers.length; i++) {
+            userVar += `
+            <div class="users" id="${i}">
+            <img src="${internalUsers[i].image}" alt="" style="max-width:100px"><br>
+            <strong>Full Name: </strong><p>${internalUsers[i].fullName} </p>
+            <strong>Email: </strong><p>${internalUsers[i].email} </p>
+            <strong>Phone Number: </strong><p>${internalUsers[i].phone} </p>
+            <button class="edit-btn" onclick="editUser(${i})">Edit</button>
+            <button  class="delete-btn" onclick="removeUser(${i})">Delete</button><hr>
+        </div>`;
+        }
+        document.getElementById('userDetails').innerHTML = userVar;
+        }
+
+        function displayDiv() {
+            if (document.getElementById("add-user").style.display  === "none") {
+                document.getElementById("add-user").style.display = "block";
+            } else {
+                document.getElementById("add-user").style.display  = "none"
+            }
+
+            if(document.getElementById("updateButton").innerHTML === "Add User") {
+                document.getElementById("updateButton").innerHTML = "Update";
+            } else {
+                document.getElementById("updateButton").innerHTML = "Add User";
+            }
+
+            }
+            
+        // function addUser() {
+        // if(document.getElementById("updateButton").innerHTML === "Add User") {
+        //     var newUser = {
+        //         "fullName" : document.getElementById("fullName").value,
+        //         "email" : document.getElementById("email").value,
+        //         "phone" : document.getElementById("phone").value,
+        //         "image" : document.getElementById("image").value
+        //     };
+        //     internalUsers.push(newUser);
+        //    localStorage.setItem("internalUsers",JSON.stringify(internalUsers));
+
+        //    display(internalUsers);
+        // } else {
+
+        //     id = editUser()
+        //     internalUsers[id] = {
+        //         "fullName" : document.getElementById("fullName").value,
+        //         "email" : document.getElementById("email").value,
+        //         "phone" : document.getElementById("phone").value,
+        //         "image" : document.getElementById("image").value
+        //     };
+
+        //     localStorage.setItem("internalUsers", JSON.stringify(internalUsers));
+        //     display(internalUsers);
+        // }
+        // }
+    </script>
+</body>
+</html>

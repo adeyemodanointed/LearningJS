@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ay 11 | Learning JS</title>
+</head>
+<body>
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap');
+        body {
+            font-family: "Quicksand", sans-serif;
+        }
+        #userDetails {
+            width: 50%;
+        }
+
+        button {
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            color: #fff;
+        }
+
+        .addUser-btn {background-color: brown;}
+
+        .delete-btn {background-color: red;}
+
+        .edit-btn {background-color: green;}
+
+    </style>
+
+    <button onclick="addUser()" class="addUser-btn">Add User</button>
+    <br><br>
+    <div id="userDetails"></div>
+    
+    <script>
+        internalUsers = [
+            {
+                "fullName" : "Ayodele Samuel Adebayo",
+                "email" : "unclebigbay@gmail.com",
+                "userName" : "uncleBay",
+                "image" : "unclebay.jpg"
+            },
+            {
+                "fullName" : "Ayoola Toluwanimi",
+                "email" : "ayoolat@yahoo.com",
+                "userName" : "ayoolat",
+                "image" : "avatar.png"
+            },
+            {
+                "fullName" : "Aisha Opaluwa",
+                "email" : "aeesh@gmail.com",
+                "userName" : "aeesh",
+                "image" : "avatar.png"
+            },
+            {
+                "fullName" : "Akan Asanga",
+                "email" : "asanga@gmail.com",
+                "userName" : "akasanga",
+                "image" : "akan.jpg"
+            }
+        ];
+
+        userVar = '';
+
+        for(i=0; i<internalUsers.length; i++) {
+            userVar += `
+            <div class="users" id="${i}">
+            <img src="${internalUsers[i].image}" alt="" style="max-width:100px"><br>
+            <strong>Full Name: </strong>${internalUsers[i].fullName} </br>
+            <strong>Email: </strong>${internalUsers[i].email} </br>
+            <strong>User Name: </strong>${internalUsers[i].userName} </br>
+            <button class="edit-btn" onclick="editUser(${i})">Edit</button>
+            <button  class="delete-btn" onclick="deleteUser(${i})">Delete</button><hr>
+        </div>`;
+        }
+        document.getElementById('userDetails').innerHTML = userVar;
+
+        function addUser() {
+            new_internalUser = {
+                "fullName" : prompt("Input your Full Name"),
+                "email" : prompt("Input your email"),
+                "userName" : prompt("Input selected userName"),
+                "image" :  prompt("Choose New Avatar: 1.png for male, 2.png for female")
+            }
+            internalUsers.push(new_internalUser)
+
+            userVar += `
+            <div class="users" id="${internalUsers.length-1}">
+            <img src="${new_internalUser.image}" alt="" style="max-width:100px"><br>
+            <strong>Full Name: </strong><p>${new_internalUser.fullName} </p>
+            <strong>Email: </strong><p>${new_internalUser.email} </p>
+            <strong>userName: </strong><p>${new_internalUser.userName} </p>
+            <button class="edit-btn" onclick="editUser()">Edit</button>
+            <button class="delete-btn" onclick="deleteUser(${internalUsers.length-1})">Delete</button><hr>
+        </div>`;
+            document.getElementById('userDetails').innerHTML = userVar;
+        }
+
+        function editUser(index) {
+
+            edit_internalUser = {
+                "fullName" : prompt("Input New Full Name", internalUsers[index].fullName),
+                "email" : prompt("Input your email", internalUsers[index].email),
+                "userName" : prompt("Input selected userName", internalUsers[index].userName),
+                "image" : prompt("Choose New Avatar: 1.png for male, 2.png for female", internalUsers[index].image)
+            }
+            internalUsers[index] = edit_internalUser;
+            
+            userVar = '';
+
+            for(i=0; i<internalUsers.length; i++) {
+            userVar += `
+            <div class="users" id="${i}">
+            <img src="${internalUsers[i].image}" alt="" style="max-width:100px"><br>
+            <strong>Full Name: </strong>${internalUsers[i].fullName} </br>
+            <strong>Email: </strong>${internalUsers[i].email} </br>
+            <strong>User Name: </strong>${internalUsers[i].userName} </br>
+            <button class="edit-btn" onclick="editUser(${i})">Edit</button>
+            <button  class="delete-btn" onclick="deleteUser(${i})">Delete</button><hr>
+            </div>`;
+            }
+            document.getElementById('userDetails').innerHTML = userVar;
+        }
+
+        function deleteUser(index) {
+
+            // console.time("First")
+            // var objDelete = document.getElementById(index);
+            // objDelete.remove();
+
+            internalUsers.splice(index,1);
+
+            userVar = '';
+
+            for(i=0; i<internalUsers.length; i++) {
+            userVar += `
+            <div class="users" id="${i}">
+            <img src="${internalUsers[i].image}" alt="" style="max-width:100px"><br>
+            <strong>Full Name: </strong>${internalUsers[i].fullName} </br>
+            <strong>Email: </strong>${internalUsers[i].email} </br>
+            <strong>User Name: </strong>${internalUsers[i].userName} </br>
+            <button class="edit-btn" onclick="editUser(${i})">Edit</button>
+            <button  class="delete-btn" onclick="deleteUser(${i})">Delete</button><hr>
+        </div>`;
+        }
+            document.getElementById('userDetails').innerHTML = userVar;
+        }
+    </script>
+</body>
+</html>
