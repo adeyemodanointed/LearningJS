@@ -13,27 +13,45 @@
             font-family: Helvetica, sans-serif;
         }
 
+        button {
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+        }
+        button:active {outline: none;}
+
         .my-header {
             padding: 20px;
             text-align: center;
             background-color: #444444;
             color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .initial-add-btn {
+            background-color: brown;
+            margin-left: 20px;
+            margin-bottom: 10px;
         }
 
         #add-user {
             display: none;
         }
+
         .add-user-form {
             display: flex;
             flex-direction: column;
             background-color: rgb(51, 123, 218);
-            width: fit-content;
+            width: 300px;
             margin: auto;
             padding: 20px;
             justify-content: space-between;
-            height: fit-content;
+            height: 60vh;
             position: absolute;
             right: 0;
+            color: #fff;
         }
 
         .add-user-form input {
@@ -44,17 +62,46 @@
             margin: 5px;
         }
 
+        .add-user-form label {
+            padding:10px;
+            font-style: italic;
+            font-size: 0.7rem;
+        }
+
         .add-user-form input:focus {
             outline: 0;
         }
 
         .add-user-form button {
-            border-radius: 5px;
-            border: none;
             width: 100px;
             padding: 5px;
             background-color: #aaa;
             margin: 5px auto;
+        }
+
+        #updateButton {
+            display: none;
+            background-color: blue;
+        }
+
+        #addButton {
+            background-color: blue;
+        }
+
+        .btn-holder {
+            display: flex;
+        }
+
+        .edit-btn {background-color: green;}
+        .delete-btn {background-color: red;}
+
+        #userDetails div {
+            padding: 10px;
+        } 
+
+        #userDetails div:nth-child(2n-1) {
+            background-color: rgb(116, 105, 219);
+            color: #fff;
         }
 
 
@@ -63,16 +110,19 @@
 <body>
 
     <div class="my-header"><h3>SAVING DETAILS IN LOCAL STORAGE AND PRINTING DOM</h3></div>
-    <button onclick="displayDiv()">Add New User</button>
+    <button onclick="displayDiv()" class="initial-add-btn">+ Add New User</button>
     <div id="add-user">
         <div class="add-user-form">
+        <input type="hidden" id="index">
         <input type="text" placeholder="Enter your Full Name" id="fullName">
         <input type="text" placeholder="Enter Email Address" id="email">
         <input type="text" placeholder="Enter your Phone Number" id="phone">
+        <label for="">Input 1.png for male avatar or 2.png for female avatar</label>
         <input type="text" placeholder="Enter your image" id="image">
         <div class="btn-holder">
-            <button onclick="addUser()" id="updateButton" >Add User</button>
-            <button onclick="displayDiv()" >Cancel</button>
+            <button onclick="updateUser()" id="updateButton" >Update</button>
+            <button onclick="addUser()" id="addButton" >Add User</button>
+            <button onclick="removeDiv()" >Cancel</button>
         </div>
     </div>
     </div>
@@ -90,27 +140,52 @@
         localStorage.setItem("internalUsers", JSON.stringify(internalUsers))
 
         display(internalUsers)
+
+        function addUser() {
+           var newUser = {
+                "fullName" : document.getElementById("fullName").value,
+                "email" : document.getElementById("email").value,
+                "phone" : document.getElementById("phone").value,
+                "image" : document.getElementById("image").value
+            };
+            internalUsers.push(newUser);
+           localStorage.setItem("internalUsers",JSON.stringify(internalUsers));
+
+           display(internalUsers);
+        }
         
         function removeUser (id) {
-            internalUsers.splice(id,1);
-            localStorage.setItem("internalUsers", JSON.stringify(internalUsers));
-            display(internalUsers);
+            if(confirm("Are you sure you want to delete?")) {
+                internalUsers.splice(id,1);
+                localStorage.setItem("internalUsers", JSON.stringify(internalUsers));
+                display(internalUsers);
+            }
         }
 
-        function editUser (id) {
+        function triggerEdit(id) {
             document.getElementById("fullName").value = internalUsers[id].fullName;
             document.getElementById("email").value = internalUsers[id].email;
             document.getElementById("phone").value = internalUsers[id].phone;
             document.getElementById("image").value = internalUsers[id].image;
+            document.getElementById("index").value = id;
 
-            if(document.getElementById("updateButton").innerHTML === "Add User") {
-                document.getElementById("updateButton").innerHTML = "Update";
-            } else {
-                document.getElementById("updateButton").innerHTML = "Add User";
-            }
-            displayDiv();
+            document.getElementById("addButton").style.display = "none";
+            document.getElementById("updateButton").style.display = "inline";
+            
+            document.getElementById("add-user").style.display = "block";
+        }
 
-            return id;
+        function updateUser() {
+            var i = document.getElementById("index").value;
+            internalUsers[i] = {
+                "fullName" : document.getElementById("fullName").value,
+                "email" : document.getElementById("email").value,
+                "phone" : document.getElementById("phone").value,
+                "image" : document.getElementById("image").value
+            };
+
+            localStorage.setItem("internalUsers", JSON.stringify(internalUsers));
+            display(internalUsers);
         }
 
         function display(internalUsers) {
@@ -120,57 +195,32 @@
             userVar += `
             <div class="users" id="${i}">
             <img src="${internalUsers[i].image}" alt="" style="max-width:100px"><br>
-            <strong>Full Name: </strong><p>${internalUsers[i].fullName} </p>
-            <strong>Email: </strong><p>${internalUsers[i].email} </p>
-            <strong>Phone Number: </strong><p>${internalUsers[i].phone} </p>
-            <button class="edit-btn" onclick="editUser(${i})">Edit</button>
-            <button  class="delete-btn" onclick="removeUser(${i})">Delete</button><hr>
+            <strong>Full Name: </strong>${internalUsers[i].fullName} </br>
+            <strong>Email: </strong>${internalUsers[i].email} </br>
+            <strong>Phone Number: </strong>${internalUsers[i].phone} </br>
+            <button class="edit-btn" onclick="triggerEdit(${i})">Edit</button>
+            <button  class="delete-btn" onclick="removeUser(${i})">Delete</button></br></br>
         </div>`;
         }
         document.getElementById('userDetails').innerHTML = userVar;
         }
 
         function displayDiv() {
-            if (document.getElementById("add-user").style.display  === "none") {
-                document.getElementById("add-user").style.display = "block";
-            } else {
-                document.getElementById("add-user").style.display  = "none"
-            }
+            document.getElementById("fullName").value = null;
+            document.getElementById("email").value = null;
+            document.getElementById("phone").value = null;
+            document.getElementById("image").value = null;
+            document.getElementById("index").value = null;
 
-            if(document.getElementById("updateButton").innerHTML === "Add User") {
-                document.getElementById("updateButton").innerHTML = "Update";
-            } else {
-                document.getElementById("updateButton").innerHTML = "Add User";
-            }
+            document.getElementById("add-user").style.display = "block";
+            document.getElementById("updateButton").style.display = "none"
+            document.getElementById("addButton").style.display = "inline"
+        }
 
-            }
-            
-        // function addUser() {
-        // if(document.getElementById("updateButton").innerHTML === "Add User") {
-        //     var newUser = {
-        //         "fullName" : document.getElementById("fullName").value,
-        //         "email" : document.getElementById("email").value,
-        //         "phone" : document.getElementById("phone").value,
-        //         "image" : document.getElementById("image").value
-        //     };
-        //     internalUsers.push(newUser);
-        //    localStorage.setItem("internalUsers",JSON.stringify(internalUsers));
-
-        //    display(internalUsers);
-        // } else {
-
-        //     id = editUser()
-        //     internalUsers[id] = {
-        //         "fullName" : document.getElementById("fullName").value,
-        //         "email" : document.getElementById("email").value,
-        //         "phone" : document.getElementById("phone").value,
-        //         "image" : document.getElementById("image").value
-        //     };
-
-        //     localStorage.setItem("internalUsers", JSON.stringify(internalUsers));
-        //     display(internalUsers);
-        // }
-        // }
+        function removeDiv() {
+            document.getElementById("add-user").style.display = "none";
+        }
+        
     </script>
 </body>
 </html>
